@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block title %}Reports & Trends{% endblock %}
+{% block header %}Analytics{% endblock %}
+{% block subheader %}Visualize air quality trends and identify pollution hotspots{% endblock %}
+
+{% block content %}
+<div class="reports-grid">
+    <div class="chart-card">
+        <h3>Monthly AQI Trends (City-wise)</h3>
+        <div class="chart-container">
+            <canvas id="trendsChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>Pollution Hotspots (Top 5 Stations)</h3>
+        <div class="chart-container">
+            <canvas id="hotspotsChart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}

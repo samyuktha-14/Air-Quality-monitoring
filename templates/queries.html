@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% block title %}Queries{% endblock %}
+{% block header %}Analyse{% endblock %}
+{% block subheader %}Get specific answers and deep-dive into the AQI history{% endblock %}
+
+{% block content %}
+<div class="card query-card">
+    <h2>Ask the Database</h2>
+    <p class="query-info">Select a specific question below to retrieve filtered insights from the system.</p>
+
+    <div class="query-selector-section">
+        <div class="form-group">
+            <label for="query_type">Choose a Question:</label>
+            <select id="query_type" class="large-select">
+                <option value="">-- Select a Question --</option>
+                <option value="city_avg">What is the average AQI for a specific City?</option>
+                <option value="daily_avg">What was the average air quality across all cities on a specific day?</option>
+                <option value="detailed_logs">Show all detailed sensor readings for a specific Station & Date.</option>
+                <option value="daily_peak">Compare Cities: Which city had the highest average air pollution today?
+                </option>
+                <option value="dominant_stats">Which pollutant has been the "Dominant Pollutant" most frequently?
+                </option>
+            </select>
+        </div>
+
+        <div id="dynamic-filters" class="filters-container hidden">
+            <!-- Parameters like City, Station, or Date appear here -->
+            <div id="city-param" class="form-group hidden">
+                <label for="param_city_id">Select City:</label>
+                <select id="param_city_id"></select>
+            </div>
+
+            <div id="station-param" class="form-group hidden">
+                <label for="param_station_id">Select Station:</label>
+                <select id="param_station_id"></select>
+            </div>
+
+            <div id="date-param" class="form-group hidden">
+                <label for="param_date">Select Date:</label>
+                <input type="date" id="param_date">
+            </div>
+        </div>
+
+        <div class="query-actions">
+            <button id="run-query" class="btn primary disabled" disabled>Run Query</button>
+        </div>
+    </div>
+</div>
+
+<div id="query-results" class="results-section hidden">
+    <!-- Results will be injected here (Summary Card or Table) -->
+</div>
+
+<style>
+    .query-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        margin-bottom: 30px;
+    }
+
+    .large-select {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+    }
+
+    .filters-container {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border: 1px solid #e2e8f0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .query-actions {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .results-section {
+        animation: slideUp 0.4s ease-out;
+    }
+
+    .summary-result {
+        text-align: center;
+        padding: 40px;
+        background: #fff;
+        border-radius: 12px;
+        border-left: 8px solid #3b82f6;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+
+    .summary-result h2 {
+        font-size: 3rem;
+        color: #1e293b;
+        margin: 10px 0;
+    }
+
+    .summary-result p {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
