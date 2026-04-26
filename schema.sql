@@ -49,3 +49,11 @@ CREATE TABLE IF NOT EXISTS aqi_result (
     PRIMARY KEY (station_id, measured_date),
     FOREIGN KEY (station_id) REFERENCES monitoring_station(station_id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

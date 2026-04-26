@@ -150,8 +150,8 @@ def add_measurement():
         measured_at_dt = datetime.strptime(measured_at_str, '%Y-%m-%d %H:%M:%S')
         now = datetime.now()
         diff = abs((now - measured_at_dt).total_seconds())
-        # Buffer of 5 minutes (300 seconds) for clock drift
-        if diff > 300:
+        # Buffer of 15 minutes (900 seconds) for clock drift
+        if diff > 900:
             return jsonify({'error': 'Data can only be entered for the current time. Past or future entries are blocked.'}), 400
     except ValueError:
         return jsonify({'error': 'Invalid date format'}), 400
