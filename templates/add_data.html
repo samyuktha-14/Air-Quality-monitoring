@@ -5,7 +5,7 @@
 {% block subheader %}Manually insert pollutant readings for monitoring stations{% endblock %}
 
 {% block content %}
-<div class="card form-card">
+<div class="form-card">
     <h2>Measurement Entry Form</h2>
     <p class="form-info">Enter values for one or more pollutants. Leave blank if data is unavailable.</p>
     
@@ -75,11 +75,11 @@
 <style>
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .pollutant-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 15px; }
-.form-divider { margin: 30px 0 20px; border: 0; border-top: 1px solid #eee; }
-.form-info { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
-.form-hint { font-size: 0.8rem; color: #888; display: block; margin-top: 5px; }
-.readonly-input { background-color: #f9f9f9; cursor: not-allowed; border-color: #ddd; color: #999; }
-h3 { margin-bottom: 10px; font-size: 1.1rem; color: #333; }
+.form-divider { margin: 30px 0 20px; border: 0; border-top: 1px solid var(--border-color); }
+.form-info { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; }
+.form-hint { font-size: 0.8rem; color: var(--text-dim); display: block; margin-top: 5px; }
+.readonly-input { background-color: rgba(255, 255, 255, 0.05); cursor: not-allowed; border-color: var(--border-color); color: var(--text-dim); }
+h3 { margin-bottom: 10px; font-size: 1.1rem; color: var(--text-primary); }
 @media (max-width: 768px) {
     .pollutant-grid { grid-template-columns: 1fr 1fr; }
     .form-row { grid-template-columns: 1fr; }

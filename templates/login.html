@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+{% block header %}Authorized Access{% endblock %}
+{% block subheader %}Please sign in to manage AQI data{% endblock %}
+
+{% block content %}
+<div class="login-container animate-fade-in">
+    <div class="form-card login-card">
+        <form action="/api/login" method="POST">
+            <div class="form-header">
+                <h3>Sign In</h3>
+                <p>Authorized personnel only</p>
+            </div>
+            
+            {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="e.g. admin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60vh;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-header h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-header p {
+        color: var(--text-dim);
+    }
+
+    .btn-block {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+</style>
+{% endblock %}

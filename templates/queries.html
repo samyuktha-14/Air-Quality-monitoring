@@ -54,10 +54,6 @@
 
 <style>
     .query-card {
-        background: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         margin-bottom: 30px;
     }
 
@@ -66,16 +62,17 @@
         padding: 12px;
         font-size: 1.1rem;
         border-radius: 8px;
-        border: 1px solid #ddd;
-        background-color: #fff;
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-main);
+        color: var(--text-primary);
     }
 
     .filters-container {
-        background: #f8fafc;
+        background: var(--bg-main);
         padding: 20px;
         border-radius: 8px;
         margin: 20px 0;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border-color);
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
@@ -93,20 +90,20 @@
     .summary-result {
         text-align: center;
         padding: 40px;
-        background: #fff;
+        background: var(--bg-secondary);
         border-radius: 12px;
-        border-left: 8px solid #3b82f6;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        border-left: 8px solid var(--primary-color);
+        border: 1px solid var(--border-color);
     }
 
     .summary-result h2 {
         font-size: 3rem;
-        color: #1e293b;
+        color: var(--text-primary);
         margin: 10px 0;
     }
 
     .summary-result p {
-        color: #64748b;
+        color: var(--text-secondary);
         font-size: 1.1rem;
     }
 

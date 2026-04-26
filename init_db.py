@@ -157,7 +157,12 @@ def init_db():
             """)
 
             # No sample measurements - waiting for user input
-            pass
+            
+            # Default Admin User
+            from werkzeug.security import generate_password_hash
+            admin_password = generate_password_hash('admin123')
+            cursor.execute("INSERT IGNORE INTO users (username, password_hash, role) VALUES ('admin', %s, 'admin')", (admin_password,))
+            print("Default admin user created: admin / admin123")
         except Exception as e:
             print(f"Initial seed check: {e}")
             

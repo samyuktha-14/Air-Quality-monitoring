@@ -21,11 +21,22 @@
             </div>
             <ul class="nav-links">
                 <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Dashboard</a></li>
-                <li><a href="/add_data" class="{% if request.path == '/add_data' %}active{% endif %}">Add
-                        Measurement</a></li>
-                <li><a href="/reports" class="{% if request.path == '/reports' %}active{% endif %}">Reports & Trends</a>
-                </li>
+                {% if session.get('user_id') %}
+                <li><a href="/add_data" class="{% if request.path == '/add_data' %}active{% endif %}">Add Measurement</a></li>
+                {% endif %}
+                <li><a href="/reports" class="{% if request.path == '/reports' %}active{% endif %}">Reports & Trends</a></li>
                 <li><a href="/queries" class="{% if request.path == '/queries' %}active{% endif %}">Queries</a></li>
+                {% if session.get('user_id') %}
+                <li class="nav-user-info">
+                    <div class="user-badge">
+                        <span class="user-name">{{ session.get('username') }}</span>
+                        <span class="user-role">{{ session.get('role') }}</span>
+                    </div>
+                </li>
+                <li><a href="/logout" class="nav-logout">Logout</a></li>
+                {% else %}
+                <li><a href="/login" class="{% if request.path == '/login' %}active{% endif %}">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -39,6 +50,13 @@
             </header>
 
             <div class="content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
                 {% block content %}{% endblock %}
             </div>
         </main>

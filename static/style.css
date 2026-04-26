@@ -1,24 +1,28 @@
 :root {
-    --bg-main: #f0f2f5;
+    --bg-main: #f1f5f9;
+    --bg-secondary: #ffffff;
     --sidebar-bg: #1e293b;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --text-light: #f8fafc;
-    --card-bg: rgba(255, 255, 255, 0.9);
+    --sidebar-text: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-dim: #94a3b8;
+    --card-bg: #ffffff;
+    --card-hover: #f8fafc;
     --border-color: #e2e8f0;
-    --primary-color: #3b82f6;
-    --primary-hover: #2563eb;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --accent-color: #64748b;
     
-    /* AQI Colors */
-    --aqi-good: #22c55e;
-    --aqi-satisfactory: #eab308;
-    --aqi-moderate: #f97316;
-    --aqi-poor: #ef4444;
+    /* AQI Colors - Professional Palette */
+    --aqi-good: #16a34a;
+    --aqi-satisfactory: #ca8a04;
+    --aqi-moderate: #ea580c;
+    --aqi-poor: #dc2626;
     --aqi-very-poor: #991b1b;
     --aqi-severe: #450a0a;
 
-    --font-main: 'Inter', sans-serif;
-    --transition: all 0.3s ease;
+    --font-main: 'Inter', -apple-system, sans-serif;
+    --transition: all 0.2s ease;
 }
 
 * {
@@ -42,12 +46,12 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 260px;
+    width: 250px;
     background: var(--sidebar-bg);
-    color: var(--text-light);
+    color: var(--sidebar-text);
     display: flex;
     flex-direction: column;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    border-right: 1px solid var(--border-color);
 }
 
 .sidebar-header {
@@ -81,6 +85,40 @@ body {
     border-left-color: var(--primary-color);
 }
 
+.nav-user-info {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.user-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.user-name {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.user-role {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nav-logout {
+    color: #f87171 !important;
+}
+
+.nav-logout:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-left-color: #ef4444 !important;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
@@ -89,21 +127,21 @@ body {
 }
 
 .topbar {
-    background: #fff;
-    padding: 1.5rem 2.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    background: var(--bg-secondary);
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-info h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
 }
 
 .header-info p {
     color: var(--text-secondary);
-    margin-top: 0.3rem;
-    font-size: 0.95rem;
+    margin-top: 0.2rem;
+    font-size: 0.9rem;
 }
 
 .content {
@@ -122,16 +160,13 @@ body {
 .stat-card {
     background: var(--card-bg);
     padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(10px);
+    border-radius: 8px;
     border: 1px solid var(--border-color);
     transition: var(--transition);
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .stat-card h3 {
@@ -153,10 +188,10 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    background: #fff;
+    background: var(--bg-secondary);
     padding: 1rem;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
     flex-wrap: wrap;
     gap: 1rem;
 }
@@ -168,11 +203,20 @@ body {
 
 .filters select,
 .filters input {
-    padding: 0.6rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg-main);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 8px;
+    color: var(--text-primary);
     font-family: inherit;
     outline: none;
+    transition: var(--transition);
+}
+
+.filters select:focus,
+.filters input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .btn {
@@ -195,19 +239,20 @@ body {
 }
 
 .btn.secondary {
-    background: #e2e8f0;
+    background: var(--bg-main);
     color: var(--text-primary);
+    border: 1px solid var(--border-color);
 }
 
 .btn.secondary:hover {
-    background: #cbd5e1;
+    background: var(--card-hover);
 }
 
 /* Table */
 .table-card {
     background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
@@ -236,7 +281,7 @@ th {
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: 0.5px;
 }
 
@@ -249,7 +294,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background: #f1f5f9;
+    background: #f8fafc;
 }
 
 /* AQI Badges */
@@ -271,11 +316,12 @@ tbody tr:hover {
 
 /* Forms */
 .form-card {
-    background: #fff;
+    background: var(--bg-secondary);
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    max-width: 600px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 .form-card h2 {
@@ -297,9 +343,11 @@ tbody tr:hover {
 .form-group select,
 .form-group input {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.8rem 1rem;
+    background: var(--bg-main);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 8px;
+    color: var(--text-primary);
     font-family: inherit;
     font-size: 1rem;
     transition: var(--transition);
@@ -380,10 +428,10 @@ tbody tr:hover {
 }
 
 .chart-card {
-    background: #fff;
+    background: var(--bg-secondary);
     padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .chart-card h3 {

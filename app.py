@@ -1,12 +1,26 @@
 import os
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, session, redirect, url_for, flash
 import mysql.connector
 from dotenv import load_dotenv
 from datetime import datetime
+from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY', 'your-very-secret-key-change-this-in-env')
+
+# Login Required Decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            if request.is_json:
+                return jsonify({'error': 'Unauthorized. Please login.'}), 401
+            return redirect(url_for('login_page', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -21,8 +35,44 @@ def dashboard():
     return render_template('index.html')
 
 @app.route('/add_data')
+@login_required
 def add_data():
     return render_template('add_data.html')
+
+@app.route('/login')
+def login_page():
+    if 'user_id' in session:
+        return redirect(url_for('add_data'))
+    return render_template('login.html')
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.form
+    username = data.get('username')
+    password = data.get('password')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        
+        if user and check_password_hash(user['password_hash'], password):
+            session['user_id'] = user['user_id']
+            session['username'] = user['username']
+            session['role'] = user['role']
+            flash(f"Welcome back, {user['username']}!", "success")
+            return redirect(url_for('add_data'))
+        else:
+            return render_template('login.html', error="Invalid username or password")
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('dashboard'))
 
 @app.route('/reports')
 def reports():
@@ -58,6 +108,7 @@ def get_metadata():
         conn.close()
 
 @app.route('/api/measurements', methods=['POST'])
+@login_required
 def add_measurement():
     data = request.json
     station_id = data.get('station_id')
