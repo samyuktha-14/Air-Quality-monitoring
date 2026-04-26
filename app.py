@@ -145,14 +145,9 @@ def add_measurement():
     measured_at_str = data.get('measured_at', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     pollutant_data = data.get('pollutants', {})
 
-    # Backend Validation: Prevent past/future dates
+    # Validation: (Disabled to support different server timezones)
     try:
         measured_at_dt = datetime.strptime(measured_at_str, '%Y-%m-%d %H:%M:%S')
-        now = datetime.now()
-        diff = abs((now - measured_at_dt).total_seconds())
-        # Buffer of 15 minutes (900 seconds) for clock drift
-        if diff > 900:
-            return jsonify({'error': 'Data can only be entered for the current time. Past or future entries are blocked.'}), 400
     except ValueError:
         return jsonify({'error': 'Invalid date format'}), 400
 
