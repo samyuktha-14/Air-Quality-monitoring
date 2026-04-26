@@ -6,23 +6,55 @@ load_dotenv()
 
 def init_db():
     try:
-        # First connect without specifying database to create it
-        conn = mysql.connector.connect(
-            host=os.getenv('DB_HOST', 'localhost'),
-            user=os.getenv('DB_USER', 'root'),
-            password=os.getenv('DB_PASS', '')
-        )
+        # Connect with the database specified (Railway gives you one pre-created)
+        url = os.getenv('MYSQL_URL')
+        db_name = os.getenv('DB_NAME', os.getenv('MYSQLDATABASE', 'aqi_db'))
+        
+        if url:
+            try:
+                # Remove protocol
+                if '://' in url: url = url.split('://')[1]
+                # Parse
+                auth, rest = url.split('@')
+                user, password = auth.split(':')
+                host_port, db_name = rest.split('/')
+                if ':' in host_port:
+                    host, port = host_port.split(':')
+                else:
+                    host, port = host_port, 3306
+                    
+                conn = mysql.connector.connect(
+                    host=host, user=user, password=password, database=db_name, port=int(port)
+                )
+            except:
+                # Fallback to individual vars if URL parse fails
+                conn = mysql.connector.connect(
+                    host=os.getenv('DB_HOST', os.getenv('MYSQLHOST', 'localhost')),
+                    user=os.getenv('DB_USER', os.getenv('MYSQLUSER', 'root')),
+                    password=os.getenv('DB_PASS', os.getenv('MYSQLPASSWORD', '')),
+                    port=int(os.getenv('DB_PORT', os.getenv('MYSQLPORT', 3306))),
+                    database=db_name
+                )
+        else:
+            conn = mysql.connector.connect(
+                host=os.getenv('DB_HOST', os.getenv('MYSQLHOST', 'localhost')),
+                user=os.getenv('DB_USER', os.getenv('MYSQLUSER', 'root')),
+                password=os.getenv('DB_PASS', os.getenv('MYSQLPASSWORD', '')),
+                port=int(os.getenv('DB_PORT', os.getenv('MYSQLPORT', 3306))),
+                database=db_name
+            )
         cursor = conn.cursor()
         
         # Read the schema.sql file
         with open('schema.sql', 'r') as f:
             schema_sql = f.read()
             
-        print("Creating Core Schema (Tables)...")
+        print(f"Creating Core Schema (Tables) in {db_name}...")
         # Split by semicolon and execute
         queries = schema_sql.split(';')
         for q in queries:
-            if q.strip():
+            q = q.strip()
+            if q and not q.startswith('CREATE DATABASE') and not q.startswith('USE'):
                 try:
                     cursor.execute(q)
                 except Exception as e:
@@ -31,8 +63,8 @@ def init_db():
         conn.commit()
         
         # Now define and insert triggers individually
-        # Switch to database explicitly
-        cursor.execute("USE aqi_db;")
+        # Switch to database explicitly (redundant but safe)
+        cursor.execute(f"USE {db_name};")
         
         print("Creating Trigger trg_calculate_aqi...")
         cursor.execute("DROP TRIGGER IF EXISTS trg_calculate_aqi")

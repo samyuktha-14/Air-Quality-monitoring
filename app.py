@@ -23,11 +23,41 @@ def login_required(f):
     return decorated_function
 
 def get_db_connection():
+    url = os.getenv('MYSQL_URL')
+    if url:
+        # Parse the connection URL: mysql://user:pass@host:port/db
+        try:
+            # Remove the protocol
+            if '://' in url:
+                url = url.split('://')[1]
+            
+            # Split auth and host/db
+            auth, rest = url.split('@')
+            user, password = auth.split(':')
+            
+            # Split host:port and db
+            host_port, db_name = rest.split('/')
+            if ':' in host_port:
+                host, port = host_port.split(':')
+            else:
+                host, port = host_port, 3306
+                
+            return mysql.connector.connect(
+                host=host,
+                user=user,
+                password=password,
+                database=db_name,
+                port=int(port)
+            )
+        except Exception as e:
+            print(f"Error parsing MYSQL_URL: {e}")
+
     return mysql.connector.connect(
-        host=os.getenv('DB_HOST', 'localhost'),
-        user=os.getenv('DB_USER', 'root'),
-        password=os.getenv('DB_PASS', ''),
-        database=os.getenv('DB_NAME', 'aqi_db')
+        host=os.getenv('DB_HOST', os.getenv('MYSQLHOST', 'localhost')),
+        user=os.getenv('DB_USER', os.getenv('MYSQLUSER', 'root')),
+        password=os.getenv('DB_PASS', os.getenv('MYSQLPASSWORD', '')),
+        database=os.getenv('DB_NAME', os.getenv('MYSQLDATABASE', 'aqi_db')),
+        port=int(os.getenv('DB_PORT', os.getenv('MYSQLPORT', 3306)))
     )
 
 @app.route('/')
